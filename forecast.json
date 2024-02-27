@@ -1,0 +1,451 @@
+[
+    {
+        "name": "Bandung",
+        "currentTime": "02/26/24, 01:05 PM",
+        "temp": 23,
+        "feels_like": 24,
+        "desc": "overcast clouds",
+        "icon": "04d",
+        "humidity": 92,
+        "pressure": 1012,
+        "wind": 3,
+        "days": [
+            {
+                "day": "Monday",
+                "forecast": [
+                    {
+                        "time": "Mon",
+                        "hour": "1 PM",
+                        "temp": 24,
+                        "feels_like": 25,
+                        "desc": "overcast clouds",
+                        "icon": "04d",
+                        "humidity": 82,
+                        "pressure": 1012,
+                        "wind": 8
+                    },
+                    {
+                        "time": "Mon",
+                        "hour": "4 PM",
+                        "temp": 24,
+                        "feels_like": 25,
+                        "desc": "light rain",
+                        "icon": "10d",
+                        "humidity": 82,
+                        "pressure": 1011,
+                        "wind": 6
+                    },
+                    {
+                        "time": "Mon",
+                        "hour": "7 PM",
+                        "temp": 22,
+                        "feels_like": 23,
+                        "desc": "light rain",
+                        "icon": "10n",
+                        "humidity": 91,
+                        "pressure": 1012,
+                        "wind": 2
+                    },
+                    {
+                        "time": "Mon",
+                        "hour": "10 PM",
+                        "temp": 22,
+                        "feels_like": 23,
+                        "desc": "light rain",
+                        "icon": "10n",
+                        "humidity": 93,
+                        "pressure": 1013,
+                        "wind": 1
+                    }
+                ]
+            },
+            {
+                "day": "Tuesday",
+                "forecast": [
+                    {
+                        "time": "Tue",
+                        "hour": "1 AM",
+                        "temp": 22,
+                        "feels_like": 23,
+                        "desc": "light rain",
+                        "icon": "10n",
+                        "humidity": 94,
+                        "pressure": 1012,
+                        "wind": 0
+                    },
+                    {
+                        "time": "Tue",
+                        "hour": "4 AM",
+                        "temp": 22,
+                        "feels_like": 22,
+                        "desc": "light rain",
+                        "icon": "10n",
+                        "humidity": 94,
+                        "pressure": 1011,
+                        "wind": 1
+                    },
+                    {
+                        "time": "Tue",
+                        "hour": "7 AM",
+                        "temp": 22,
+                        "feels_like": 22,
+                        "desc": "moderate rain",
+                        "icon": "10d",
+                        "humidity": 93,
+                        "pressure": 1012,
+                        "wind": 2
+                    },
+                    {
+                        "time": "Tue",
+                        "hour": "10 AM",
+                        "temp": 26,
+                        "feels_like": 26,
+                        "desc": "light rain",
+                        "icon": "10d",
+                        "humidity": 77,
+                        "pressure": 1012,
+                        "wind": 5
+                    },
+                    {
+                        "time": "Tue",
+                        "hour": "1 PM",
+                        "temp": 26,
+                        "feels_like": 29,
+                        "desc": "moderate rain",
+                        "icon": "10d",
+                        "humidity": 75,
+                        "pressure": 1009,
+                        "wind": 7
+                    },
+                    {
+                        "time": "Tue",
+                        "hour": "4 PM",
+                        "temp": 24,
+                        "feels_like": 25,
+                        "desc": "moderate rain",
+                        "icon": "10d",
+                        "humidity": 84,
+                        "pressure": 1008,
+                        "wind": 5
+                    },
+                    {
+                        "time": "Tue",
+                        "hour": "7 PM",
+                        "temp": 22,
+                        "feels_like": 23,
+                        "desc": "moderate rain",
+                        "icon": "10n",
+                        "humidity": 95,
+                        "pressure": 1010,
+                        "wind": 1
+                    },
+                    {
+                        "time": "Tue",
+                        "hour": "10 PM",
+                        "temp": 21,
+                        "feels_like": 22,
+                        "desc": "heavy intensity rain",
+                        "icon": "10n",
+                        "humidity": 97,
+                        "pressure": 1012,
+                        "wind": 2
+                    }
+                ]
+            },
+            {
+                "day": "Wednesday",
+                "forecast": [
+                    {
+                        "time": "Wed",
+                        "hour": "1 AM",
+                        "temp": 21,
+                        "feels_like": 22,
+                        "desc": "moderate rain",
+                        "icon": "10n",
+                        "humidity": 95,
+                        "pressure": 1011,
+                        "wind": 2
+                    },
+                    {
+                        "time": "Wed",
+                        "hour": "4 AM",
+                        "temp": 21,
+                        "feels_like": 21,
+                        "desc": "light rain",
+                        "icon": "10n",
+                        "humidity": 93,
+                        "pressure": 1010,
+                        "wind": 3
+                    },
+                    {
+                        "time": "Wed",
+                        "hour": "7 AM",
+                        "temp": 22,
+                        "feels_like": 22,
+                        "desc": "light rain",
+                        "icon": "10d",
+                        "humidity": 88,
+                        "pressure": 1012,
+                        "wind": 2
+                    },
+                    {
+                        "time": "Wed",
+                        "hour": "10 AM",
+                        "temp": 24,
+                        "feels_like": 25,
+                        "desc": "light rain",
+                        "icon": "10d",
+                        "humidity": 79,
+                        "pressure": 1012,
+                        "wind": 3
+                    },
+                    {
+                        "time": "Wed",
+                        "hour": "1 PM",
+                        "temp": 27,
+                        "feels_like": 29,
+                        "desc": "light rain",
+                        "icon": "10d",
+                        "humidity": 68,
+                        "pressure": 1009,
+                        "wind": 5
+                    },
+                    {
+                        "time": "Wed",
+                        "hour": "4 PM",
+                        "temp": 25,
+                        "feels_like": 26,
+                        "desc": "moderate rain",
+                        "icon": "10d",
+                        "humidity": 78,
+                        "pressure": 1008,
+                        "wind": 4
+                    },
+                    {
+                        "time": "Wed",
+                        "hour": "7 PM",
+                        "temp": 22,
+                        "feels_like": 23,
+                        "desc": "moderate rain",
+                        "icon": "10n",
+                        "humidity": 92,
+                        "pressure": 1010,
+                        "wind": 1
+                    },
+                    {
+                        "time": "Wed",
+                        "hour": "10 PM",
+                        "temp": 22,
+                        "feels_like": 22,
+                        "desc": "moderate rain",
+                        "icon": "10n",
+                        "humidity": 95,
+                        "pressure": 1013,
+                        "wind": 2
+                    }
+                ]
+            },
+            {
+                "day": "Thursday",
+                "forecast": [
+                    {
+                        "time": "Thu",
+                        "hour": "1 AM",
+                        "temp": 21,
+                        "feels_like": 22,
+                        "desc": "heavy intensity rain",
+                        "icon": "10n",
+                        "humidity": 96,
+                        "pressure": 1011,
+                        "wind": 2
+                    },
+                    {
+                        "time": "Thu",
+                        "hour": "4 AM",
+                        "temp": 21,
+                        "feels_like": 22,
+                        "desc": "light rain",
+                        "icon": "10n",
+                        "humidity": 95,
+                        "pressure": 1011,
+                        "wind": 1
+                    },
+                    {
+                        "time": "Thu",
+                        "hour": "7 AM",
+                        "temp": 22,
+                        "feels_like": 22,
+                        "desc": "light rain",
+                        "icon": "10d",
+                        "humidity": 93,
+                        "pressure": 1012,
+                        "wind": 1
+                    },
+                    {
+                        "time": "Thu",
+                        "hour": "10 AM",
+                        "temp": 25,
+                        "feels_like": 25,
+                        "desc": "light rain",
+                        "icon": "10d",
+                        "humidity": 80,
+                        "pressure": 1012,
+                        "wind": 4
+                    },
+                    {
+                        "time": "Thu",
+                        "hour": "1 PM",
+                        "temp": 26,
+                        "feels_like": 26,
+                        "desc": "moderate rain",
+                        "icon": "10d",
+                        "humidity": 76,
+                        "pressure": 1009,
+                        "wind": 7
+                    },
+                    {
+                        "time": "Thu",
+                        "hour": "4 PM",
+                        "temp": 24,
+                        "feels_like": 25,
+                        "desc": "moderate rain",
+                        "icon": "10d",
+                        "humidity": 84,
+                        "pressure": 1008,
+                        "wind": 5
+                    },
+                    {
+                        "time": "Thu",
+                        "hour": "7 PM",
+                        "temp": 22,
+                        "feels_like": 23,
+                        "desc": "moderate rain",
+                        "icon": "10n",
+                        "humidity": 95,
+                        "pressure": 1011,
+                        "wind": 2
+                    },
+                    {
+                        "time": "Thu",
+                        "hour": "10 PM",
+                        "temp": 21,
+                        "feels_like": 22,
+                        "desc": "light rain",
+                        "icon": "10n",
+                        "humidity": 95,
+                        "pressure": 1013,
+                        "wind": 0
+                    }
+                ]
+            },
+            {
+                "day": "Friday",
+                "forecast": [
+                    {
+                        "time": "Fri",
+                        "hour": "1 AM",
+                        "temp": 21,
+                        "feels_like": 22,
+                        "desc": "light rain",
+                        "icon": "10n",
+                        "humidity": 95,
+                        "pressure": 1011,
+                        "wind": 3
+                    },
+                    {
+                        "time": "Fri",
+                        "hour": "4 AM",
+                        "temp": 21,
+                        "feels_like": 21,
+                        "desc": "overcast clouds",
+                        "icon": "04n",
+                        "humidity": 94,
+                        "pressure": 1011,
+                        "wind": 3
+                    },
+                    {
+                        "time": "Fri",
+                        "hour": "7 AM",
+                        "temp": 22,
+                        "feels_like": 23,
+                        "desc": "overcast clouds",
+                        "icon": "04d",
+                        "humidity": 90,
+                        "pressure": 1013,
+                        "wind": 1
+                    },
+                    {
+                        "time": "Fri",
+                        "hour": "10 AM",
+                        "temp": 26,
+                        "feels_like": 28,
+                        "desc": "light rain",
+                        "icon": "10d",
+                        "humidity": 71,
+                        "pressure": 1013,
+                        "wind": 6
+                    },
+                    {
+                        "time": "Fri",
+                        "hour": "1 PM",
+                        "temp": 26,
+                        "feels_like": 26,
+                        "desc": "moderate rain",
+                        "icon": "10d",
+                        "humidity": 76,
+                        "pressure": 1010,
+                        "wind": 8
+                    },
+                    {
+                        "time": "Fri",
+                        "hour": "4 PM",
+                        "temp": 24,
+                        "feels_like": 25,
+                        "desc": "moderate rain",
+                        "icon": "10d",
+                        "humidity": 88,
+                        "pressure": 1009,
+                        "wind": 5
+                    },
+                    {
+                        "time": "Fri",
+                        "hour": "7 PM",
+                        "temp": 22,
+                        "feels_like": 23,
+                        "desc": "moderate rain",
+                        "icon": "10n",
+                        "humidity": 94,
+                        "pressure": 1011,
+                        "wind": 3
+                    },
+                    {
+                        "time": "Fri",
+                        "hour": "10 PM",
+                        "temp": 22,
+                        "feels_like": 22,
+                        "desc": "light rain",
+                        "icon": "10n",
+                        "humidity": 94,
+                        "pressure": 1013,
+                        "wind": 2
+                    }
+                ]
+            }
+        ],
+        "current": {
+            "chartLabels": [
+                "Now",
+                "1 PM",
+                "4 PM",
+                "7 PM",
+                "10 PM",
+                "1 AM",
+                "4 AM",
+                "7 AM"
+            ],
+            "chartData": [23, 24, 24, 22, 22, 22, 22, 22],
+            "chartMin": 22,
+            "chartMax": 24
+        }
+    }
+]

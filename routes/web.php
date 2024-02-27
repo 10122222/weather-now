@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ScheduleForecastController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,13 +18,20 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Weather', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'apiKey' => env('OPENWEATHER_API_KEY', '')
     ]);
 });
+
+Route::resource('schedule', ScheduleForecastController::class)
+    ->only(['index', 'store'])
+    ->middleware('auth', 'verified');
+
+Route::post('schedule')->name('schedule.cancel')->uses([ScheduleForecastController::class, 'cancel'])->middleware('auth');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -35,4 +43,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
