@@ -23,7 +23,8 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'apiKey' => env('OPENWEATHER_API_KEY', '')
+        'apiKey' => env('OPENWEATHER_API_KEY', ''),
+        'defaultData' => json_decode(file_get_contents(public_path('forecast.json')))
     ]);
 });
 
