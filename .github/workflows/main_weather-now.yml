@@ -9,6 +9,9 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  HUSKY: 0
+
 jobs:
   build:
     runs-on: ubuntu-latest
