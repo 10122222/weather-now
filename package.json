@@ -36,6 +36,6 @@
     "react-icons": "^5.0.1"
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix"
+    "*.js": "eslint --fix"
   }
 }

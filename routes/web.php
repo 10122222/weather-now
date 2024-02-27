@@ -28,11 +28,11 @@ Route::get('/', function () {
     ]);
 });
 
-Route::resource('schedule', ScheduleForecastController::class)
-    ->only(['index', 'store'])
-    ->middleware('auth', 'verified');
-
-Route::post('schedule')->name('schedule.cancel')->uses([ScheduleForecastController::class, 'cancel'])->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::get('/schedule', [ScheduleForecastController::class, 'index'])->name('schedule.index');
+    Route::post('/schedule', [ScheduleForecastController::class, 'store'])->name('schedule.store');
+    Route::delete('/schedule', [ScheduleForecastController::class, 'cancel'])->name('schedule.cancel');
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

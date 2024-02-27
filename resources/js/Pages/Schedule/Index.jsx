@@ -15,11 +15,18 @@ export default function ScheduleModal() {
   const dateInput = useRef();
   const locationInput = useRef();
 
-  const { data, setData, setDefaults, post, processing, reset, errors } =
-    useForm({
-      date: '',
-      location: '',
-    });
+  const {
+    data,
+    setData,
+    post,
+    delete: destroy,
+    processing,
+    reset,
+    errors,
+  } = useForm({
+    date: '',
+    location: '',
+  });
 
   //   const setSchedule = () => {
   //     setSettingSchedule(true);
@@ -48,14 +55,14 @@ export default function ScheduleModal() {
     maxDate.setDate(maxDate.getDate() + 7);
     const maxDateStr = maxDate.toISOString().split('T')[0];
 
-    setMinDateFmt(minDateStr);
-    setMaxDateFmt(maxDateStr);
+    if (minDateStr !== minDateFmt) {
+      setMinDateFmt(minDateStr);
+    }
 
-    setDefaults({
-      date: minDateStr,
-      location: '',
-    });
-  }, [setDefaults]);
+    if (maxDateStr !== maxDateFmt) {
+      setMaxDateFmt(maxDateStr);
+    }
+  }, [minDateFmt, maxDateFmt]);
 
   const closeModal = () => {
     setSettingSchedule(false);
@@ -66,11 +73,11 @@ export default function ScheduleModal() {
   const cancel = e => {
     e.preventDefault();
 
-    post(route('schedule.cancel'), {
+    destroy(route('schedule.cancel'), {
       preserveScroll: true,
       onSuccess: () => closeModal(),
-      onError: () => {},
-      onFinish: () => reset(),
+      onError: () => closeModal(),
+      onFinish: () => closeModal(),
     });
   };
 
