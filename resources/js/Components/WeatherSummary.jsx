@@ -13,12 +13,12 @@ const WeatherSummary = ({ summary }) => {
         {summary.currentTime.split(',')[1]}
       </span>
       <img
-        src={`img/${summary.icon}.png`}
+        src={`/img/${summary.icon}.png`}
         alt={summary.desc
           .split(' ')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ')}
-        className="flex justify-center h-1/2 object-cover w-auto mx-auto"
+        className="flex justify-center object-cover w-auto mx-auto h-1/2"
       />
       <span className="flex justify-center h-[10%] sm:text-4xl">
         {summary.temp}&#176;C

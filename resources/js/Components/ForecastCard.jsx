@@ -17,7 +17,7 @@ const ForecastCard = ({ card }) => {
         <span className="flex flex-row h-1/4">{time}</span>
         <img
           className="object-cover w-auto mx-4 flex-flex-row h-2/4 max-w-12 max-h-12 sm:mx-6"
-          src={`img/${icon}.png`}
+          src={`/img/${icon}.png`}
           alt={desc
             .split(' ')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
