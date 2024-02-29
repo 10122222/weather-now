@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   parserOptions: {
-    ecmaVersion: 2020, // Use the latest ecmascript standard
+    ecmaVersion: 2023, // Use the latest ecmascript standard
     sourceType: 'module', // Allows using import/export statements
     ecmaFeatures: {
       jsx: true, // Enable JSX since we're using React
@@ -16,6 +16,7 @@ module.exports = {
     browser: true,
     amd: true,
     node: true,
+    es2023: true,
   },
   extends: [
     'eslint:recommended',
@@ -23,7 +24,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:prettier/recommended',
   ],
-  plugins: ['prettier'],
+  plugins: ['react', 'react-hooks', 'prettier'],
   rules: {
     'react/jsx-first-prop-new-line': [2, 'multiline'],
     'react/jsx-max-props-per-line': [2, { maximum: 1, when: 'multiline' }],

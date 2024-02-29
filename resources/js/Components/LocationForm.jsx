@@ -19,17 +19,18 @@ function LocationForm({ onSubmitHandler }) {
   };
 
   return (
-    <div className="h-14 sm:h-20 grid content-center">
+    <div className="flex h-1/5">
       <form
-        className="m-auto h-12 w-40 sm:w-96 relative"
+        className="self-center m-auto h-3/4 md:h-12 min-w-full relative"
         onSubmit={handleSubmit}
       >
         <input
-          type="text"
-          className="w-full h-full text-xs sm:text-sm md:text-base placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base px-4 py-2 text-gray-700 bg-white bg-opacity-75 border border-white border-opacity-0 rounded-3xl focus:border-transparent focus:ring-transparent"
+          id="location"
+          value={locationInput}
+          name="location"
+          className="w-full h-full text-xs sm:text-sm md:text-base placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base px-4 py-2 text-gray-700 bg-white bg-opacity-50 border border-white border-opacity-0 rounded-3xl focus:border-transparent focus:ring-transparent"
           placeholder="Search for places"
-          value={locationInput} // Bind value to state
-          onChange={handleChange} // Handle input changes
+          onChange={handleChange}
         />
         <button
           type="submit"

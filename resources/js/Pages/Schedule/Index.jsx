@@ -28,10 +28,6 @@ export default function ScheduleModal() {
     location: '',
   });
 
-  //   const setSchedule = () => {
-  //     setSettingSchedule(true);
-  //   };
-
   const submit = e => {
     e.preventDefault();
 

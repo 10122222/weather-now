@@ -2,15 +2,23 @@ import React from 'react';
 
 const WeatherDetails = ({ details }) => {
   return (
-    <dl className="weather-details text-xs sm:text-base grid grid-cols-2 gap-0.5 lg:gap-1">
-      <dt className="text-left">Name</dt>
-      <dd className="text-right">{details.name}</dd>
-      <dt className="text-left">Temp</dt>
-      <dd className="text-right">{details.temp}&#176;C</dd>
-      <dt className="text-left">Humidity</dt>
-      <dd className="text-right">{details.humidity}&#37;</dd>
-      <dt className="text-left">Wind</dt>
-      <dd className="text-right">{details.wind} km&#47;h</dd>
+    <dl className="text-xs sm:text-base h-2/5">
+      <div className="flex justify-between items-center h-1/4">
+        <dt>Name</dt>
+        <dd>{details.name}</dd>
+      </div>
+      <div className="flex justify-between items-center h-1/4">
+        <dt>Temp</dt>
+        <dd>{details.temp}&#176;C</dd>
+      </div>
+      <div className="flex justify-between items-center h-1/4">
+        <dt>Humidity</dt>
+        <dd>{details.humidity}&#37;</dd>
+      </div>
+      <div className="flex justify-between items-center h-1/4">
+        <dt>Wind</dt>
+        <dd>{details.wind} km&#47;h</dd>
+      </div>
     </dl>
   );
 };
