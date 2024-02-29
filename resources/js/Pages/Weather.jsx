@@ -48,7 +48,7 @@ export default function Weather({
         if (currentData.cod !== 200 || forecastData.cod !== '200') {
           switch (currentData.cod) {
             case 401:
-              setError('Unauthorized: Invalid API key');
+              setError('Unauthorized, plesase try again later');
               break;
             case 404:
               setError('Location not found, please try again');
@@ -186,12 +186,11 @@ export default function Weather({
       await fetch(
         `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`
       )
-        .then(res => res.json())
-        .then(data => {
-          if (data.cod !== 200) {
-            switch (data.cod) {
+        .then(res => {
+          if (!res.ok) {
+            switch (res.status) {
               case 401:
-                setError('Unauthorized: Invalid API key');
+                setError('Unauthorized, plesase try again later');
                 break;
               case 404:
                 setError('Location not found, please try again');
@@ -206,6 +205,9 @@ export default function Weather({
             setIsLoading(false);
             return;
           }
+          return res.json();
+        })
+        .then(data => {
           setLocation(data[0].name);
         })
         .catch(error => {
@@ -268,8 +270,8 @@ export default function Weather({
   return (
     <>
       <Head title={auth.user ? 'Dasboard' : 'Weather Now'} />
-      <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen selection:bg-red-500 selection:text-white">
-        <div className="sm:fixed sm:top-0 sm:right-0 p-6 lg:p-8 text-end">
+      <div className="relative min-h-screen sm:flex sm:justify-center sm:items-center selection:bg-red-500 selection:text-white">
+        <div className="p-6 sm:fixed sm:top-0 sm:right-0 lg:p-8 text-end">
           {auth.user ? (
             <>
               <Link
@@ -283,7 +285,7 @@ export default function Weather({
                 href={route('logout')}
                 method="post"
                 as="button"
-                className="ms-4 font-semibold text-gray-600 hover:text-gray-900 focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                className="font-semibold text-gray-600 ms-4 hover:text-gray-900 focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
               >
                 Log out
               </Link>
@@ -299,16 +301,16 @@ export default function Weather({
 
               <Link
                 href={route('register')}
-                className="ms-4 font-semibold text-gray-600 hover:text-gray-900 focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                className="font-semibold text-gray-600 ms-4 hover:text-gray-900 focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
               >
                 Register
               </Link>
             </>
           )}
         </div>
-        <div className="mx-auto p-6 lg:p-8 max-w-screen-xl">
+        <div className="max-w-screen-xl p-6 mx-auto lg:p-8">
           <div className="scale-100 p-6 lg:p-8 bg-white bg-opacity-50 from-gray-700/50 via-transparent rounded-lg shadow-2xl shadow-gray-500/20 flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
-            <div className="flex justify-between w-full text-center font-semibold text-gray-800">
+            <div className="flex justify-between w-full font-semibold text-center text-gray-800">
               {isLoading ? (
                 <div>Loading...</div>
               ) : error ? (
@@ -319,7 +321,7 @@ export default function Weather({
                     <WeatherSummary summary={forecast[0]} />
                   </div>
 
-                  <div className="flex flex-col w-3/5 justify-between">
+                  <div className="flex flex-col justify-between w-3/5">
                     <LocationForm onSubmitHandler={locationHandler} />
                     <WeatherDetails details={forecast[0]} />
                     <ForecastCard card={forecast[0]} />
@@ -329,10 +331,10 @@ export default function Weather({
             </div>
           </div>
 
-          <div className="flex justify-center mt-16 px-6 sm:items-center sm:justify-between">
-            <div className="text-center text-sm sm:text-start">&nbsp;</div>
+          <div className="flex justify-center px-6 mt-16 sm:items-center sm:justify-between">
+            <div className="text-sm text-center sm:text-start">&nbsp;</div>
 
-            <div className="text-center text-sm text-gray-500 sm:text-end sm:ms-0">
+            <div className="text-sm text-center text-gray-500 sm:text-end sm:ms-0">
               Laravel v{laravelVersion} (PHP v{phpVersion})
             </div>
           </div>
