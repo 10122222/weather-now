@@ -5,238 +5,223 @@ import WeatherDetails from '@/Components/WeatherDetails';
 import WeatherSummary from '@/Components/WeatherSummary';
 import { Link, Head } from '@inertiajs/react';
 
+const addDays = (date, days) => {
+  let result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
+const convertTemp = temp => Math.trunc(temp - 273.15);
+
+const formatDate = (date, formatOptions) =>
+  date.toLocaleString('en-US', formatOptions);
+
+const handleApiError = status => {
+  const errorMessages = {
+    401: 'Unauthorized, please try again later',
+    404: 'Location not found, please try again',
+    429: 'Too many requests, please try again later',
+    default: 'Server error, please try again later',
+  };
+  return errorMessages[status] || errorMessages.default;
+};
+
+const transformWeatherData = (currentData, forecastData) => {
+  const c = new Date();
+  const currentTime = formatDate(c, {
+    hour: '2-digit',
+    minute: '2-digit',
+    year: '2-digit',
+    month: '2-digit',
+    day: '2-digit',
+  });
+  const timeUpdated = new Date();
+  let time = [];
+  let temp = [];
+  let currentDate = formatDate(timeUpdated, {
+    day: 'numeric',
+  });
+  let nextDate = addDays(timeUpdated, 1);
+  let prevDate = new Date();
+
+  nextDate = formatDate(nextDate, {
+    day: 'numeric',
+  });
+
+  let transformedDays = [];
+  let tempData = [];
+  let j = 0;
+
+  temp.push(convertTemp(currentData.main.temp));
+  time.push('Now');
+
+  for (let i = 0; i < forecastData.list.length; i++) {
+    const fData = forecastData.list[i];
+    const t = new Date(parseInt(fData.dt * 1000));
+    const humanDateFormat = formatDate(t, {
+      weekday: 'short',
+    });
+    const hour = formatDate(t, {
+      hour: 'numeric',
+    });
+
+    currentDate = formatDate(t, {
+      day: 'numeric',
+    });
+
+    if (timeUpdated < t && j <= 6) {
+      time.push(hour);
+      temp.push(convertTemp(fData.main.temp));
+      j++;
+    }
+
+    if (currentDate === nextDate) {
+      transformedDays.push({
+        day: formatDate(prevDate, {
+          weekday: 'long',
+        }),
+        forecast: tempData,
+      });
+      nextDate = addDays(t, 1);
+      nextDate = formatDate(nextDate, {
+        day: 'numeric',
+      });
+      tempData = [];
+    }
+
+    tempData.push({
+      time: humanDateFormat,
+      hour: hour,
+      temp: convertTemp(fData.main.temp),
+      feels_like: convertTemp(fData.main.feels_like),
+      desc: fData.weather[0].description,
+      icon: fData.weather[0].icon,
+      humidity: Math.trunc(fData.main.humidity),
+      pressure: Math.trunc(fData.main.pressure),
+      wind: Math.trunc(fData.wind.speed * 3.6),
+    });
+    prevDate = new Date(t);
+  }
+
+  const transformedForecast = [
+    {
+      name: currentData.name,
+      currentTime: currentTime,
+      temp: convertTemp(currentData.main.temp),
+      feels_like: convertTemp(currentData.main.feels_like),
+      desc: currentData.weather[0].description,
+      icon: currentData.weather[0].icon,
+      humidity: Math.trunc(currentData.main.humidity),
+      pressure: Math.trunc(currentData.main.pressure),
+      wind: Math.trunc(currentData.wind.speed * 3.6),
+      lat: currentData.coord.lat,
+      lon: currentData.coord.lon,
+      days: transformedDays,
+      current: {
+        chartLabels: time,
+        chartData: temp,
+        chartMin: Math.min(...temp),
+        chartMax: Math.max(...temp),
+      },
+    },
+  ];
+
+  return transformedForecast;
+};
+
 export default function Weather({
   auth,
+  initialForecast,
   laravelVersion,
+  owmApiKey,
   phpVersion,
-  apiKey,
-  defaultData,
 }) {
-  const [forecast, setForecast] = useState(defaultData);
-  const [location, setLocation] = useState(defaultData[0].name);
+  const [backgroundImage, setBackgroundImage] = useState('/img/bg.jpg');
+  const [forecast, setForecast] = useState(initialForecast);
+  const [location, setLocation] = useState('');
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const addDays = (date, days) => {
-    let result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-  };
+  const fetchWeatherForecast = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
 
-  const fetchWeatherForecast = useCallback(
-    async loc => {
-      setIsLoading(true);
-      setError(null);
+    try {
+      const [imageResponse, currentResponse, forecastResponse] =
+        await Promise.all([
+          fetch(`https://source.unsplash.com/1600x900/?${location}`),
+          fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${owmApiKey}`
+          ),
+          fetch(
+            `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${owmApiKey}`
+          ),
+          { concurrencyLimit: 3 },
+        ]);
 
-      try {
-        const [imageResponse, currentResponse, forecastResponse] =
-          await Promise.all([
-            fetch(`https://source.unsplash.com/1600x900/?${loc}`),
-            fetch(
-              `https://api.openweathermap.org/data/2.5/weather?q=${loc}&appid=${apiKey}`
-            ),
-            fetch(
-              `https://api.openweathermap.org/data/2.5/forecast?q=${loc}&appid=${apiKey}`
-            ),
-          ]);
-        const imgUrl = imageResponse.url;
-        const currentData = await currentResponse.json();
-        const forecastData = await forecastResponse.json();
+      const [imgUrl, currentData, forecastData] = await Promise.all([
+        imageResponse.url,
+        currentResponse.json(),
+        forecastResponse.json(),
+        { concurrencyLimit: 3 },
+      ]);
 
-        if (currentData.cod !== 200 || forecastData.cod !== '200') {
-          switch (currentData.cod) {
-            case 401:
-              setError('Unauthorized, plesase try again later');
-              break;
-            case 404:
-              setError('Location not found, please try again');
-              break;
-            case 429:
-              setError('Too many requests, please try again later');
-              break;
-            default:
-              setError('Server error, please try again later');
-              break;
-          }
-          setIsLoading(false);
-          return;
-        }
-
-        const c = new Date();
-        const currentTime = c.toLocaleString('en-US', {
-          hour: '2-digit',
-          minute: '2-digit',
-          year: '2-digit',
-          month: '2-digit',
-          day: '2-digit',
-        });
-
-        const timeUpdated = new Date();
-
-        let time = [];
-        let temp = [];
-        let currentDate = timeUpdated.toLocaleString('en-US', {
-          day: 'numeric',
-        });
-        let nextDate = addDays(timeUpdated, 1);
-        let prevDate = new Date();
-        nextDate = nextDate.toLocaleString('en-US', {
-          day: 'numeric',
-        });
-        let transformedDays = [];
-        let tempData = [];
-        let j = 0;
-        // add in our current time and temp
-        temp.push(Math.trunc(currentData.main.temp - 273.15));
-        time.push('Now');
-        for (let i = 0; i < forecastData.list.length; i++) {
-          const fData = forecastData.list[i];
-
-          const t = new Date(parseInt(fData.dt * 1000));
-          const humanDateFormat = t.toLocaleString('en-US', {
-            weekday: 'short',
-          });
-          const hour = t.toLocaleString('en-US', {
-            hour: 'numeric',
-          });
-          currentDate = t.toLocaleString('en-US', {
-            day: 'numeric',
-          });
-          if (timeUpdated < t && j <= 6) {
-            // get only 7 items
-            time.push(hour);
-            temp.push(Math.trunc(fData.main.temp - 273.15));
-            j++;
-          }
-
-          if (currentDate === nextDate) {
-            transformedDays.push({
-              day: prevDate.toLocaleDateString('en-US', {
-                weekday: 'long',
-              }),
-              forecast: tempData,
-            });
-            nextDate = addDays(t, 1);
-            nextDate = nextDate.toLocaleString('en-US', {
-              day: 'numeric',
-            });
-            tempData = [];
-          }
-          // add new day entry
-          tempData.push({
-            time: humanDateFormat,
-            hour: hour,
-            temp: Math.trunc(fData.main.temp - 273.15),
-            feels_like: Math.trunc(fData.main.feels_like - 273.15),
-            desc: fData.weather[0].description,
-            icon: fData.weather[0].icon,
-            humidity: Math.trunc(fData.main.humidity),
-            pressure: Math.trunc(fData.main.pressure),
-            wind: Math.trunc(fData.wind.speed * 3.6),
-          });
-          prevDate = new Date(t);
-        }
-
-        const transformedForecast = [
-          {
-            name: currentData.name,
-            currentTime: currentTime,
-            temp: Math.trunc(currentData.main.temp - 273.15),
-            feels_like: Math.trunc(currentData.main.feels_like - 273.15),
-            desc: currentData.weather[0].description,
-            icon: currentData.weather[0].icon,
-            humidity: Math.trunc(currentData.main.humidity),
-            pressure: Math.trunc(currentData.main.pressure),
-            wind: Math.trunc(currentData.wind.speed * 3.6),
-            lat: currentData.coord.lat,
-            lon: currentData.coord.lon,
-            days: transformedDays,
-            current: {
-              chartLabels: time,
-              chartData: temp,
-              chartMin: Math.min(...temp),
-              chartMax: Math.max(...temp),
-            },
-          },
-        ];
-
-        document.body.style.backgroundImage = `url(${imgUrl})`;
-        setForecast(transformedForecast);
-      } catch (error) {
-        setError(error.message);
-      } finally {
+      if (currentData.cod !== 200 || forecastData.cod !== '200') {
+        setError(handleApiError(currentData.cod));
         setIsLoading(false);
+        return;
       }
-    },
-    [apiKey]
-  );
-  useEffect(() => {
-    if (location !== '' && location != forecast[0].name) {
-      fetchWeatherForecast(location);
+
+      const transformedForecast = transformWeatherData(
+        currentData,
+        forecastData
+      );
+
+      setBackgroundImage(imgUrl);
+      setForecast(transformedForecast);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
-  }, [forecast, location, fetchWeatherForecast]);
+  }, [location, owmApiKey]);
 
-  const fetchLocation = useCallback(
-    async (lat, lon) => {
-      setIsLoading(true);
-      setError(null);
-
-      await fetch(
-        `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`
-      )
-        .then(res => {
-          if (!res.ok) {
-            switch (res.status) {
-              case 401:
-                setError('Unauthorized, plesase try again later');
-                break;
-              case 404:
-                setError('Location not found, please try again');
-                break;
-              case 429:
-                setError('Too many requests, please try again later');
-                break;
-              default:
-                setError('Server error, please try again later');
-                break;
-            }
-            setIsLoading(false);
-            return;
-          }
-          return res.json();
-        })
-        .then(data => {
-          setLocation(data[0].name);
-        })
-        .catch(error => {
-          setError(error.message);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    },
-    [apiKey]
-  );
   useEffect(() => {
-    if (
-      latitude !== 0 &&
-      longitude !== 0 &&
-      latitude !== forecast[0].lat &&
-      longitude !== forecast[0].lon
-    )
-      fetchLocation(latitude, longitude);
-  }, [latitude, longitude, forecast, fetchLocation]);
+    if (location && location != forecast[0].name) {
+      fetchWeatherForecast();
+    }
+  }, [location, forecast, fetchWeatherForecast]);
 
-  const handleSuccess = pos => {
-    setLatitude(pos.coords.latitude);
-    setLongitude(pos.coords.longitude);
-  };
+  const fetchLocation = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${owmApiKey}`
+      );
 
-  const handleErrors = err => {
-    setError(`Error ${err.code}: ${err.message}`);
-  };
+      if (!response.ok) {
+        setError(handleApiError(response.status));
+        setIsLoading(false);
+        return;
+      }
+
+      const data = await response.json();
+      setLocation(data[0].name);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+      setLatitude(0);
+      setLongitude(0);
+    }
+  }, [latitude, longitude, owmApiKey]);
+
+  useEffect(() => {
+    if (latitude && longitude) fetchLocation();
+  }, [latitude, longitude, fetchLocation]);
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -246,13 +231,21 @@ export default function Weather({
 
     navigator.permissions.query({ name: 'geolocation' }).then(result => {
       if (result.state === 'granted' || result.state === 'prompt') {
-        navigator.geolocation.getCurrentPosition(handleSuccess, handleErrors, {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 0,
-        });
-      } else if (result.state === 'denied') {
-        setError('Location permission denied.');
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            setLatitude(pos.coords.latitude);
+            setLongitude(pos.coords.longitude);
+          },
+          err => {
+            if (err.code === 1) return;
+            setError(`Error ${err.code}: ${err.message}`);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 60000,
+          }
+        );
       }
     });
   }, []);
@@ -260,7 +253,6 @@ export default function Weather({
   const locationHandler = useCallback(
     newLocation => {
       if (newLocation !== location) {
-        // Check for actual changes
         setLocation(newLocation);
       }
     },
@@ -270,7 +262,15 @@ export default function Weather({
   return (
     <>
       <Head title={auth.user ? 'Dasboard' : 'Weather Now'} />
-      <div className="relative min-h-screen sm:flex sm:justify-center sm:items-center selection:bg-red-500 selection:text-white">
+      <div
+        className="relative min-h-screen sm:flex sm:justify-center sm:items-center selection:bg-red-500 selection:text-white"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+        }}
+      >
         <div className="p-6 sm:fixed sm:top-0 sm:right-0 lg:p-8 text-end">
           {auth.user ? (
             <>

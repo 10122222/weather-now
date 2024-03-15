@@ -21,10 +21,10 @@ Route::get('/', function () {
     return Inertia::render('Weather', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
+        'initialForecast' => json_decode(file_get_contents(public_path('forecast.json'))),
         'laravelVersion' => Application::VERSION,
+        'owmApiKey' => env('OPENWEATHER_API_KEY', ''),
         'phpVersion' => PHP_VERSION,
-        'apiKey' => env('OPENWEATHER_API_KEY', ''),
-        'defaultData' => json_decode(file_get_contents(public_path('forecast.json')))
     ]);
 });
 
